@@ -68,14 +68,35 @@ const Image = styled.img`
 
 const Calendar = ({ onConfirm, onCancel }) => {
   const [showCalendar, setShowCalendar] = useState(false);
-  const [selected, setSelected] = useState();
+  const [selected, setSelected] = useState(null);
+
+  const months = [
+    "Jan.",
+    "Feb.",
+    "Mar.",
+    "Apr.",
+    "May",
+    "June",
+    "July",
+    "Aug.",
+    "Sept.",
+    "Oct.",
+    "Nov.",
+    "Dec.",
+  ];
+
+  const formatDate = (date) => {
+    const dayOfWeek = date.toLocaleString("default", { weekday: "short" });
+    const month = months[date.getMonth()];
+    const day = date.getDate();
+    return `${dayOfWeek}, ${month} ${day}`;
+  };
 
   let footer = "";
   if (selected) {
     footer = (
       <>
         <ButtonContainer>
-          {/* <p>You picked {format(selected, "PP")}.</p> */}
           <Button
             onClick={() => {
               onCancel(setSelected);
@@ -87,7 +108,7 @@ const Calendar = ({ onConfirm, onCancel }) => {
           <Button
             confirm
             onClick={() => {
-              onConfirm(selected);
+              onConfirm(formatDate(selected));
               setShowCalendar(false);
             }}
           >
@@ -103,7 +124,7 @@ const Calendar = ({ onConfirm, onCancel }) => {
       <CalendarInput>
         <Image src={inputIcon} inputCalendarIcon />
         <Input
-          value={selected ? format(selected, "PP") : ""}
+          value={selected ? formatDate(selected) : ""}
           onClick={() => setShowCalendar(true)}
         />
       </CalendarInput>
